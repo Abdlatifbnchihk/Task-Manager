@@ -14,7 +14,13 @@ class Task extends Model
         'description',
         'status',
     ]; 
-        // 🔗 Relationship: Task belongs to User
+
+    public const STATUSES = [
+        'todo' => 'To Do',
+        'in_progress' => 'In Progress',
+        'completed' => 'Completed',
+    ];
+    // 🔗 Relationship: Task belongs to User
     public function user()
     {
         return $this->belongsTo(User::class);
