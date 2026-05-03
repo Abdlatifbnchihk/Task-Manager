@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
+// use App\Http\Auth\RejisteredUserController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -20,6 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
     Route::get('/', fn() => redirect()->route('tasks.index'))->name('dashboard');
     Route::get('/dashboard', [TaskController::class, 'index']);
+    // Route::get('/rejister', [RejisteredUserController::class, 'create']);
     Route::get('/tasks/create', [TaskController::class, 'create'])->name('tasks.create');
     Route::post('/tasks/create', [TaskController::class, 'store'])->name('tasks.store');
     Route::get('/tasks/{task}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
@@ -28,12 +30,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/tasks/{task}/status', [TaskController::class, 'updateStatus'])->name('tasks.status');
 });
 
-
-
-
-Route::get('/test', function() {
-    return view('test');
-});
 
 
 require __DIR__ . '/auth.php';
