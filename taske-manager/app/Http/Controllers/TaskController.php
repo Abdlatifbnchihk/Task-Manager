@@ -11,27 +11,34 @@ class TaskController extends Controller
     //
 
     private function authorizeOwnership(Task $task){
-        if($task->user_id != auth()->id){
+        if($task->user_id !== auth()->id()){
             abort(403, 'Unauthorized action.');
         }
     }
-
     // handel category and show all
     public function index(Request $request) {
-        $query = auth()->user()->tasks()->with("Category");
+    
+        $counts = [
+            'todo'        => auth()->user()->tasks()->where('status', 'todo')->count(),
+            'in_progress' => auth()->user()->tasks()->where('status', 'in_progress')->count(),
+            'completed'   => auth()->user()->tasks()->where('status', 'completed')->count(),
+        ];
+
+
+        $query = auth()->user()->tasks()->with("category");
 
         if($request->filled("status")) {
             $query->where("status", $request->status);
         }
 
         if($request->filled("category_id")) {
-            $query->where("category_id", $request->category);
+            $query->where("category_id", $request->category_id);
         }
 
         $tasks = $query->latest()->get();
         $categories = Category::orderBy("name")->get();
 
-        return view("tasks.index", compact("tasks", "categories"));
+        return view("tasks.index", compact("tasks", "categories", "counts"));
     }
 
     public function create() {

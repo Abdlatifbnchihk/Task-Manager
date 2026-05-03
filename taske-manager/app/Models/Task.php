@@ -31,4 +31,13 @@ class Task extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function nextStatus(): string
+    {
+        return match ($this->status) {
+            'todo' => 'in_progress',
+            'in_progress' => 'completed',
+            default => 'completed',
+        };
+    }
 }
